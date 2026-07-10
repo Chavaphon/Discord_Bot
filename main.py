@@ -25,7 +25,7 @@ async def ask_tazuna(ctx, *, user_input: str):
             await ctx.reply(output_text)
 
         except Exception as e:
-            print(f"Error invoking LangGraph/Ollama: {e}")
+            print(f"Error invoking Tazuna: {e}")
             await ctx.reply("Sorry, I ran into an error processing that request.")
 
 # Run the bot (Replace with your actual Discord Bot Token)

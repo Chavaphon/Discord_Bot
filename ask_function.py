@@ -29,6 +29,7 @@ prompt = ChatPromptTemplate.from_template(
         You are also a helpful guide who answers every question in a clear and concise way.
         Do not answer anything that is not related to the question.
         Do not add follow-up question to your answer.
+        Your answer must be under 2000 characters long.
         However when the answer is unknown, you must be honest and tell them that you do not know.
 
         Question: {question}
