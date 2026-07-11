@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
-from typing import Annotated
-from typing_extensions import TypedDict
+from typing import Annotated, TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
@@ -30,8 +29,8 @@ prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
 )
 
 
-def call_tazuna(state: State):
-    user_prompt = state["question"]
+def call_tazuna(State):
+    user_prompt = State["question"]
     
     message = prompt.invoke(user_prompt)
 

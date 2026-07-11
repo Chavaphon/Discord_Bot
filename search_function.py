@@ -1,10 +1,10 @@
 import os
 from dotenv import load_dotenv
-from typing import Annotated
-from typing_extensions import TypedDict
+from typing import Annotated, TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
+from langchain_tavily import TavilySearch
 
 from prompt_template import prompt_template
 
@@ -32,17 +32,16 @@ prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
 
 )
 
+def fetch_information(State) -> dict:
+    query = State["question"]
 
-def fetch_information(state: State) -> dict:
-    # fetch information from searching the internet
-    # to be implemented
+    search_tool = TavilySearch(max_results=3)
+    response = search_tool.invoke({"query": query})
 
-    response = "placeholder"
+    return {"context": str(response["results"])}
 
-    return {"context": response}
-
-def answer(state: State) -> dict:
-    message = prompt.invoke({"context": state["context"], "question": state["question"]})
+def answer(State) -> dict:
+    message = prompt.invoke({"context": State["context"], "question": State["question"]})
 
     response = llm.invoke(message)
 
@@ -50,10 +49,13 @@ def answer(state: State) -> dict:
 
 
 builder = StateGraph(State)
-builder.add_node("tazuna", call_tazuna)
 
-builder.add_edge(START, "tazuna")
-builder.add_edge("tazuna", END)
+builder.add_node("fetch_information", fetch_information)
+builder.add_node("answer", answer)
+
+builder.add_edge(START, "fetch_information")
+builder.add_edge("fetch_information", "answer")
+builder.add_edge("answer", END)
 
 graph = builder.compile()
 
@@ -65,4 +67,4 @@ def search(user_input):
     return output_text
 
 if __name__ == "__main__":
-    print("placeholder")
+    print(search("how many days until Halloween"))

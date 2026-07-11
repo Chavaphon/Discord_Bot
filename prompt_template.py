@@ -8,6 +8,5 @@ class prompt_template:
 
         Do not answer anything that is not related to the question.
         Do not add follow-up question to your answer.
-        Your answer must be under 2000 characters long.
         If you can not get an answer, you must be honest and tell them that you do not know.
     '''
