@@ -11,18 +11,21 @@ from prompt_template import prompt_template
 load_dotenv()
 
 # ==========================================
-# ask Tazuna
+# web search
 # ==========================================
 
 class State(TypedDict):
     question: str
+    context: str
     answer: str
 
 llm = ChatOllama(model=os.getenv('MODEL'))
 
 prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
     '''
-        You are also a helpful guide who answers every question in a clear and concise way.
+        You are also a helpful guide who answers the question using ONLY information from the context.
+
+        Context: {context}
 
         Question: {question}
     '''
@@ -30,10 +33,16 @@ prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
 )
 
 
-def call_tazuna(state: State):
-    user_prompt = state["question"]
-    
-    message = prompt.invoke(user_prompt)
+def fetch_information(state: State) -> dict:
+    # fetch information from searching the internet
+    # to be implemented
+
+    response = "placeholder"
+
+    return {"context": response}
+
+def answer(state: State) -> dict:
+    message = prompt.invoke({"context": state["context"], "question": state["question"]})
 
     response = llm.invoke(message)
 
@@ -48,7 +57,7 @@ builder.add_edge("tazuna", END)
 
 graph = builder.compile()
 
-def ask(user_input):
+def search(user_input):
     response = graph.invoke({"question": user_input})
 
     output_text = response["answer"]
@@ -56,4 +65,4 @@ def ask(user_input):
     return output_text
 
 if __name__ == "__main__":
-    print(ask("Who are you?"))
+    print("placeholder")
