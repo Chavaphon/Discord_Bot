@@ -47,63 +47,6 @@ async def ask_tazuna(ctx):
 # ==========================================
 # !ask
 # ==========================================
-# class State(TypedDict):
-#     request: str
-#     response: str
-
-# class Reason(BaseModel):
-#     use: Literal["ask", "search",]
-
-# llm = ChatOllama(model=os.getenv('MODEL'))
-
-# prompt = ChatPromptTemplate.from_template(
-#     '''
-#         You are a helpful assistant equipped with tools to help with the user's request.
-
-#         Here are the descriptions of your tools:
-#         ask: Use when the request relies entirely on static facts, history, 
-#         or knowledge that does not change over time before 1st December 2023.
-
-#         search: Use when the request requires real-time information, current events, 
-#         or calculations dependent on the current date and time.
-
-#         Your job is to determine which tool to use based on the user's request.
-
-#         User's request: {request}
-
-#         What tool will you use? 
-#     '''
-# )
-
-# def determine(State) -> dict:
-#     message = prompt.invoke({"request" : State["request"]})
-
-#     structured_llm = llm.with_structured_output(Reason)
-
-#     response = structured_llm.invoke(message)
-
-#     return response.use
-
-# def tool_ask(State) -> dict:
-#     print("using tool_ask...")
-#     return {"response": ask(State["request"])}
-
-# def tool_search(State) -> dict:
-#     print("using tool_search...")
-#     return {"response": search(State["request"])}
-
-# builder = StateGraph(State)
-
-# builder.add_node("tool_ask", tool_ask)
-# builder.add_node("tool_search", tool_search)
-
-# builder.add_conditional_edges(START, determine, {"ask": "tool_ask", "search": "tool_search"})
-
-# builder.add_edge("tool_ask", END)
-# builder.add_edge("tool_search", END)
-
-# graph = builder.compile()
-
 @bot.command(name="ask")
 async def ask_tazuna(ctx, *, user_input: str):
     async with ctx.typing():
