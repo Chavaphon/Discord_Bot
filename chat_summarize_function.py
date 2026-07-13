@@ -25,12 +25,14 @@ class State(TypedDict):
 
 llm = ChatOllama(model=os.getenv('MODEL'))
 
-get_date_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
+summarization_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
     '''
-        Your job is to extract starting date and ending date from the request the user has given.
-        Today is: {today}
+        Your job is to summarize the given messages.
+        Do no skip on any details.
+        Only outputs the summarized message and nothing else.
+        
 
-        user's request: {request}
+        Summarize this message: {messages}
     '''
 )
 
@@ -57,21 +59,6 @@ async def get_messages(State) -> dict:
     formatted_message = "\n".join(messages)
 
     return {"messages": formatted_message}
-    # from main import get_messages
-
-    # messages = await get_messages(State["ctx"], State["start_date"], State["end_date"])
-    # return {"messages": messages}
-
-summarization_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
-    '''
-        Your job is to summarize the given messages.
-        Do no skip on any details.
-        Only outputs the summarized message and nothing else.
-        
-
-        Summarize this message: {messages}
-    '''
-)
 
 def summarize(State):
     message = summarization_prompt.invoke({"messages": State["messages"]})

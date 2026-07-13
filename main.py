@@ -6,7 +6,6 @@ from typing_extensions import TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
-from pydantic import BaseModel
 
 from datetime import datetime, time
 
@@ -15,7 +14,6 @@ from discord.ext import commands
 
 from help_message import help_message
 from ask_function import ask
-from search_function import search
 from helper_function import helper_chunk
 from chat_summarize_function import summarize_messages
 
@@ -49,83 +47,78 @@ async def ask_tazuna(ctx):
 # ==========================================
 # !ask
 # ==========================================
-class State(TypedDict):
-    request: str
-    response: str
+# class State(TypedDict):
+#     request: str
+#     response: str
 
-class Reason(BaseModel):
-    use: Literal["ask", "search",]
+# class Reason(BaseModel):
+#     use: Literal["ask", "search",]
 
-llm = ChatOllama(model=os.getenv('MODEL'))
+# llm = ChatOllama(model=os.getenv('MODEL'))
 
-prompt = ChatPromptTemplate.from_template(
-    '''
-        You are a helpful assistant equipped with tools to help with the user's request.
+# prompt = ChatPromptTemplate.from_template(
+#     '''
+#         You are a helpful assistant equipped with tools to help with the user's request.
 
-        Here are the descriptions of your tools:
-        ask: Use when the request relies entirely on static facts, history, 
-        or knowledge that does not change over time before 1st December 2023.
+#         Here are the descriptions of your tools:
+#         ask: Use when the request relies entirely on static facts, history, 
+#         or knowledge that does not change over time before 1st December 2023.
 
-        search: Use when the request requires real-time information, current events, 
-        or calculations dependent on the current date and time.
+#         search: Use when the request requires real-time information, current events, 
+#         or calculations dependent on the current date and time.
 
-        Your job is to determine which tool to use based on the user's request.
+#         Your job is to determine which tool to use based on the user's request.
 
-        User's request: {request}
+#         User's request: {request}
 
-        What tool will you use? 
-    '''
-)
+#         What tool will you use? 
+#     '''
+# )
 
-def determine(State) -> dict:
-    message = prompt.invoke({"request" : State["request"]})
+# def determine(State) -> dict:
+#     message = prompt.invoke({"request" : State["request"]})
 
-    structured_llm = llm.with_structured_output(Reason)
+#     structured_llm = llm.with_structured_output(Reason)
 
-    response = structured_llm.invoke(message)
+#     response = structured_llm.invoke(message)
 
-    return response.use
+#     return response.use
 
-def tool_ask(State) -> dict:
-    print("using tool_ask...")
-    return {"response": ask(State["request"])}
+# def tool_ask(State) -> dict:
+#     print("using tool_ask...")
+#     return {"response": ask(State["request"])}
 
-def tool_search(State) -> dict:
-    print("using tool_search...")
-    return {"response": search(State["request"])}
+# def tool_search(State) -> dict:
+#     print("using tool_search...")
+#     return {"response": search(State["request"])}
 
-async def tool_summarize(State) -> dict:
-    res = await summarize_messages(State["ctx"])
-    
-    return {"response": res}
+# builder = StateGraph(State)
 
-builder = StateGraph(State)
+# builder.add_node("tool_ask", tool_ask)
+# builder.add_node("tool_search", tool_search)
 
-builder.add_node("tool_ask", tool_ask)
-builder.add_node("tool_search", tool_search)
+# builder.add_conditional_edges(START, determine, {"ask": "tool_ask", "search": "tool_search"})
 
-builder.add_conditional_edges(START, determine, {"ask": "tool_ask", "search": "tool_search"})
+# builder.add_edge("tool_ask", END)
+# builder.add_edge("tool_search", END)
 
-builder.add_edge("tool_ask", END)
-builder.add_edge("tool_search", END)
-
-graph = builder.compile()
+# graph = builder.compile()
 
 @bot.command(name="ask")
 async def ask_tazuna(ctx, *, user_input: str):
     async with ctx.typing():
         try:
-            output_text = await graph.invoke({"request": user_input})
+            output_text = ask(user_input=user_input)
 
-            if len(output_text["response"]) > 2000:
+            if len(output_text) > 2000:
                 print("chunking...")
                 await ctx.reply("Give me one moment, please.")
                 
-                chunked_output = helper_chunk(output_text["response"])
+                chunked_output = helper_chunk(output_text)
                 for ele in chunked_output:
                     await ctx.reply(ele)
             else:
-                await ctx.reply(output_text["response"])
+                await ctx.reply(output_text)
             
             print("Task completed!")
 
