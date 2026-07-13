@@ -11,10 +11,6 @@ from prompt_template import prompt_template
 
 load_dotenv()
 
-# ==========================================
-# web search
-# ==========================================
-
 class State(TypedDict):
     question: str
     context: str
@@ -30,7 +26,6 @@ prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
 
         Question: {question}
     '''
-
 )
 
 def fetch_information(State) -> dict:
@@ -48,7 +43,6 @@ def answer(State) -> dict:
 
     return {"answer": response.content}
 
-
 builder = StateGraph(State)
 
 builder.add_node("fetch_information", fetch_information)
@@ -63,9 +57,7 @@ graph = builder.compile()
 def search(user_input):
     response = graph.invoke({"question": user_input})
 
-    output_text = response["answer"]
-
-    return output_text
+    return response["answer"]
 
 if __name__ == "__main__":
     print(search("how many days until Halloween"))

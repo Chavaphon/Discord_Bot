@@ -9,10 +9,6 @@ from prompt_template import prompt_template
 
 load_dotenv()
 
-# ==========================================
-# ask Tazuna
-# ==========================================
-
 class State(TypedDict):
     question: str
     answer: str
@@ -25,11 +21,9 @@ prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
 
         Question: {question}
     '''
-
 )
 
-
-def call_tazuna(State):
+def ask_tazuna(State):
     user_prompt = State["question"]
     
     message = prompt.invoke(user_prompt)
@@ -40,19 +34,17 @@ def call_tazuna(State):
 
 
 builder = StateGraph(State)
-builder.add_node("tazuna", call_tazuna)
+builder.add_node("ask", ask_tazuna)
 
-builder.add_edge(START, "tazuna")
-builder.add_edge("tazuna", END)
+builder.add_edge(START, "ask")
+builder.add_edge("ask", END)
 
 graph = builder.compile()
 
 def ask(user_input):
     response = graph.invoke({"question": user_input})
 
-    output_text = response["answer"]
-
-    return output_text
+    return response["answer"]
 
 if __name__ == "__main__":
     print(ask("Who are you?"))

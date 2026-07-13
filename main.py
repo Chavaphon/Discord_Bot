@@ -13,9 +13,7 @@ from datetime import datetime, time
 import discord
 from discord.ext import commands
 
-# ==========================================
-# ADD TOOLS HERE
-# ==========================================
+from help_message import help_message
 from ask_function import ask
 from search_function import search
 from helper_function import helper_chunk
@@ -26,8 +24,31 @@ load_dotenv()
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
+@bot.event
+async def on_ready():
+    print(f"Logged in as {bot.user.name} (ID: {bot.user.id})")
+    print("------")
+
+# ==========================================
+# !help
+# ==========================================
+@bot.command(name="help")
+async def ask_tazuna(ctx):
+    async with ctx.typing():
+        try:
+            await ctx.reply(help_message.message)
+            
+            print("Task completed!")
+
+        except Exception as e:
+            print(f"Error invoking Tazuna: {e}")
+            await ctx.reply("Sorry, I ran into an error processing that request.")
+
+# ==========================================
+# !ask
+# ==========================================
 class State(TypedDict):
     request: str
     response: str
@@ -78,9 +99,6 @@ async def tool_summarize(State) -> dict:
     
     return {"response": res}
 
-# ==========================================
-# ADD TOOLS HERE
-# ==========================================
 builder = StateGraph(State)
 
 builder.add_node("tool_ask", tool_ask)
@@ -92,11 +110,6 @@ builder.add_edge("tool_ask", END)
 builder.add_edge("tool_search", END)
 
 graph = builder.compile()
-
-@bot.event
-async def on_ready():
-    print(f"Logged in as {bot.user.name} (ID: {bot.user.id})")
-    print("------")
 
 @bot.command(name="ask")
 async def ask_tazuna(ctx, *, user_input: str):
@@ -120,32 +133,15 @@ async def ask_tazuna(ctx, *, user_input: str):
             print(f"Error invoking Tazuna: {e}")
             await ctx.reply("Sorry, I ran into an error processing that request.")
 
-# async def get_messages(ctx: any, start_date: str, end_date: str) -> str:
-#     start_d = datetime.strptime(start_date.strip(), '%Y-%m-%d').date()
-#     end_d = datetime.strptime(end_date.strip(), '%Y-%m-%d').date()
-
-#     start_time = datetime.combine(start_d, time(0, 0, 0))
-#     end_time = datetime.combine(end_d, time(23, 59, 59))
-
-#     messages = []
-
-#     async for message in ctx.channel.history(after=start_time, before=end_time, limit=2000):
-#         if message.author.bot:
-#             continue
-        
-#         messages.append(f"{message.author.display_name}: {message.content}")
-    
-#     messages.reverse()
-#     formatted_message = "\n".join(messages)
-
-#     return formatted_message
-
+# ==========================================
+# !summarize
+# ==========================================
 @bot.command(name="summarize")
 async def summarize_tazuna(ctx, *, user_input: str):
     async with ctx.typing():
         try:
             start_date, end_date = user_input.split("|")
-            output_text = await summarize_messages(ctx=ctx, start_date=start_date, end_date=end_date)
+            output_text = await summarize_messages(ctx=ctx, start_date=start_date.strip(), end_date=end_date.strip())
 
             if len(output_text) > 2000:
                 print("chunking...")
