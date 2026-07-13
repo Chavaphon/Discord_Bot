@@ -4,6 +4,7 @@ from typing import Annotated, TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
+
 from langchain_tavily import TavilySearch
 
 from prompt_template import prompt_template
