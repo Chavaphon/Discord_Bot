@@ -19,18 +19,18 @@ class State(TypedDict):
 class Reason(BaseModel):
     use: Literal["ask", "search",]
 
-llm = ChatOllama(model=os.getenv('MODEL'))
+llm = ChatOllama(model=os.getenv("MODEL"))
 
 ask_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
-    '''
+    """
         You are also a helpful guide who answers every question in a clear and concise way.
 
         Question: {question}
-    '''
+    """
 )
 
 determiner_prompt = ChatPromptTemplate.from_template(
-    '''
+    """
         You are a helpful assistant equipped with tools to help with the user's request.
 
         Here are the descriptions of your tools:
@@ -45,7 +45,7 @@ determiner_prompt = ChatPromptTemplate.from_template(
         User's request: {request}
 
         What tool will you use? 
-    '''
+    """
 )
 
 def determine(State) -> dict:

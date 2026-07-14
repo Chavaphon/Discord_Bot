@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-folder = os.getenv('PDF_FOLDER')
+folder = os.getenv("PDF_FOLDER")
 
 async def download_pdf(attachments: list) -> str:
     if not os.path.exists(folder):

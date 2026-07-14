@@ -23,17 +23,17 @@ class State(TypedDict):
     end_date: str
     summarized_message: str
 
-llm = ChatOllama(model=os.getenv('MODEL'))
+llm = ChatOllama(model=os.getenv("MODEL"))
 
 summarization_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
-    '''
+    """
         Your job is to summarize the given messages.
         Do no skip on any details.
         Only outputs the summarized message and nothing else.
         
 
         Summarize this message: {messages}
-    '''
+    """
 )
 
 async def get_messages(State) -> dict:
@@ -41,8 +41,8 @@ async def get_messages(State) -> dict:
     end_date = State["end_date"]
     ctx = State["ctx"]
 
-    start_d = datetime.strptime(start_date.strip(), '%Y-%m-%d').date()
-    end_d = datetime.strptime(end_date.strip(), '%Y-%m-%d').date()
+    start_d = datetime.strptime(start_date.strip(), "%Y-%m-%d").date()
+    end_d = datetime.strptime(end_date.strip(), "%Y-%m-%d").date()
 
     start_time = datetime.combine(start_d, time(0, 0, 0))
     end_time = datetime.combine(end_d, time(23, 59, 59))

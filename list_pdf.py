@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-folder = os.getenv('PDF_FOLDER')
+folder = os.getenv("PDF_FOLDER")
 
 def list_pdf() -> str:
     pdfs = ""

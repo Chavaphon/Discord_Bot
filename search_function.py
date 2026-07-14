@@ -16,16 +16,16 @@ class State(TypedDict):
     context: str
     answer: str
 
-llm = ChatOllama(model=os.getenv('MODEL'))
+llm = ChatOllama(model=os.getenv("MODEL"))
 
 prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
-    '''
+    """
         You are also a helpful guide who answers the question using ONLY information from the context.
 
         Context: {context}
 
         Question: {question}
-    '''
+    """
 )
 
 def fetch_information(State) -> dict:

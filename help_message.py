@@ -1,5 +1,5 @@
 class help_message:
-    message = '''
+    message = """
         Nice to meet you! I am **Tazuna Hayakawa**, the appointed secretary here at the Tracen Academy URA (Umamusume Racing Association) headquarters. As part of my duties to ensure everything runs smoothly, I’ve also prepared these comprehensive *Tracen Academy Guidebooks* for you!
 
 ## !ask
@@ -17,4 +17,4 @@ class help_message:
 ## !memory
 - **Description**: Use when you want **view** all the PDF(s) Tazuna have.
 - **Format**: `!memory`
-    '''
+    """

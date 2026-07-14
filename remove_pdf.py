@@ -6,7 +6,7 @@ import shutil
 from dotenv import load_dotenv
 
 load_dotenv()
-folder = os.getenv('PDF_FOLDER')
+folder = os.getenv("PDF_FOLDER")
 
 def remove_pdf(pdf: str) -> str:
     if pdf.lower() == "all":

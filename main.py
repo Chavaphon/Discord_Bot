@@ -151,6 +151,30 @@ async def summarize_tazuna(ctx: any):
             print(f"Error invoking Tazuna: {e}")
             await ctx.reply("Sorry, I ran into an error processing that request.")
 
+# ==========================================
+# !source
+# ==========================================
+@bot.command(name="source")
+async def ask_tazuna(ctx: any, *, user_input: str):
+    async with ctx.typing():
+        try:
+
+            if len(output_text) > 2000:
+                print("chunking...")
+                await ctx.reply("Give me one moment, please.")
+                
+                chunked_output = helper_chunk(text=output_text)
+                for ele in chunked_output:
+                    await ctx.reply(ele)
+            else:
+                await ctx.reply(output_text)
+            
+            print("Task completed!")
+
+        except Exception as e:
+            print(f"Error invoking Tazuna: {e}")
+            await ctx.reply("Sorry, I ran into an error processing that request.")
+
 if __name__ == "__main__":
     TOKEN = os.getenv("DISCORD_BOT_TOKEN")
     bot.run(TOKEN)
