@@ -44,11 +44,10 @@ query_prompt = ChatPromptTemplate.from_template(
 
 answer_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
     """
-        You are also a helpful guide who answers question only using information from the context.
-        Always cite the files you used to answer the question.
+        You are also a helpful guide who answers the question using ONLY information from the context.
 
-        Question: {question}
         Context: {context}
+        Question: {question}
         Source: {source}
     """
 )

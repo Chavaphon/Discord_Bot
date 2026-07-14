@@ -36,8 +36,8 @@ prompt = ChatPromptTemplate.from_template(
 )
 
 
-def chunking(State):
-    message = prompt.invoke(State["text"])
+def chunking(state: State):
+    message = prompt.invoke(state["text"])
 
     structured_llm = llm.with_structured_output(Chunks)
 
@@ -54,7 +54,7 @@ builder.add_edge("chunker", END)
 
 graph = builder.compile()
 
-def helper_chunk(text):
+def helper_chunk(text: str):
     response = graph.invoke({"text": text})
 
     output_text = response["chunks"]

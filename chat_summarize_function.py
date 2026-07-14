@@ -36,10 +36,10 @@ summarization_prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
     """
 )
 
-async def get_messages(State) -> dict:
-    start_date = State["start_date"]
-    end_date = State["end_date"]
-    ctx = State["ctx"]
+async def get_messages(state: State) -> dict:
+    start_date = state["start_date"]
+    end_date = state["end_date"]
+    ctx = state["ctx"]
 
     start_d = datetime.strptime(start_date.strip(), "%Y-%m-%d").date()
     end_d = datetime.strptime(end_date.strip(), "%Y-%m-%d").date()
@@ -60,8 +60,8 @@ async def get_messages(State) -> dict:
 
     return {"messages": formatted_message}
 
-def summarize(State):
-    message = summarization_prompt.invoke({"messages": State["messages"]})
+def summarize(state: State):
+    message = summarization_prompt.invoke({"messages": state["messages"]})
 
     response = llm.invoke(message)
 

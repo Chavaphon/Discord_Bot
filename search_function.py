@@ -28,16 +28,16 @@ prompt = ChatPromptTemplate.from_template(prompt_template.prompt +
     """
 )
 
-def fetch_information(State) -> dict:
-    query = State["question"]
+def fetch_information(state: State) -> dict:
+    query = state["question"]
 
     search_tool = TavilySearch(max_results=3)
     response = search_tool.invoke({"query": query})
 
     return {"context": str(response["results"])}
 
-def answer(State) -> dict:
-    message = prompt.invoke({"context": State["context"], "question": State["question"]})
+def answer(state: State) -> dict:
+    message = prompt.invoke({"context": state["context"], "question": state["question"]})
 
     response = llm.invoke(message)
 
@@ -54,7 +54,7 @@ builder.add_edge("answer", END)
 
 graph = builder.compile()
 
-def search(user_input):
+def search(user_input: str):
     response = graph.invoke({"question": user_input})
 
     return response["answer"]

@@ -48,8 +48,8 @@ determiner_prompt = ChatPromptTemplate.from_template(
     """
 )
 
-def determine(State) -> dict:
-    message = determiner_prompt.invoke({"request" : State["question"]})
+def determine(state: State) -> dict:
+    message = determiner_prompt.invoke({"request" : state["question"]})
 
     structured_llm = llm.with_structured_output(Reason)
 
@@ -57,8 +57,8 @@ def determine(State) -> dict:
 
     return response.use
 
-def tool_ask(State) -> dict:
-    user_prompt = State["question"]
+def tool_ask(state: State) -> dict:
+    user_prompt = state["question"]
     
     message = ask_prompt.invoke(user_prompt)
 
@@ -66,8 +66,8 @@ def tool_ask(State) -> dict:
 
     return {"answer": response.content}
 
-def tool_search(State) -> dict:
-    return {"answer": search(State["question"])}
+def tool_search(state: State) -> dict:
+    return {"answer": search(state["question"])}
 
 builder = StateGraph(State)
 
@@ -81,7 +81,7 @@ builder.add_edge("tool_search", END)
 
 graph = builder.compile()
 
-def ask(user_input):
+def ask(user_input: str):
     response = graph.invoke({"question": user_input})
 
     return response["answer"]
