@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 from pathlib import Path
 from pypdf import PdfReader
@@ -18,6 +19,7 @@ load_dotenv()
 class State(TypedDict):
     folder: str
     question: str
+    query: str
     retriever: any
     context: str
     source: List[str]
@@ -78,8 +80,17 @@ def setup_retriever(state: State) -> dict:
     
     return {"retriever": vector_store.as_retriever(search_kwargs={"k": 3})}
 
-def query(state: State) -> str:
-    docs = retriever.invoke(state["question"])
+def generate_query(state: State) -> dict:
+    message = query_prompt.invoke({"question": state["question"]})
+    response = llm.invoke(message)
+
+    query = response.content.strip().strip('"').strip("'")
+    return {"query": query}
+
+def query(state: State) -> dict:
+    retriever = state["retriever"]
+    
+    docs = retriever.invoke(state["query"])
     
     formatted_chunks = []
     source = set()
@@ -87,21 +98,44 @@ def query(state: State) -> str:
     for doc in docs:
         source_path = doc.metadata.get("source", "Unknown Source")
         filename = os.path.basename(source_path)
-        sources_used.add(filename)
+        source.add(filename)
         
         chunk_text = f"[Source: {filename}]\n{doc.page_content}"
         formatted_chunks.append(chunk_text)
     
     context = "\n\n---\n\n".join(formatted_chunks)
     
-    return {"context": context, "source": source}
+    return {"context": context, "source": list(source)}
 
-def answer(State):
-    message = prompt.invoke({"question": State["question"], "context": State["context"], "source": State["source"]})
-
+def answer(state: State) -> dict:
+    message = answer_prompt.invoke({
+        "question": state["question"], 
+        "context": state["context"], 
+        "source": state["source"]
+    })
     response = llm.invoke(message)
-
     return {"answer": response.content}
 
+builder = StateGraph(State)
+
+builder.add_node("setup_retriever", setup_retriever)
+builder.add_node("generate_query", generate_query)
+builder.add_node("query", query)
+builder.add_node("answer", answer)
+
+builder.add_edge(START, "setup_retriever")
+builder.add_edge("setup_retriever", "generate_query")
+builder.add_edge("generate_query", "query")
+builder.add_edge("query", "answer")
+builder.add_edge("answer", END)
+
+graph = builder.compile()
+
+def RAG(user_input: str) -> str:
+    folder = os.getenv("PDF_FOLDER")
+    response = graph.invoke({"question": user_input, "folder": folder})
+
+    return response["answer"]
+
 if __name__ == "__main__":
-    print()
+    print(RAG("what do we learn in AI Automation?"))

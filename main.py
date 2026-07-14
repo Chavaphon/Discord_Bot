@@ -19,6 +19,7 @@ from chat_summarize_function import summarize_messages
 from download_pdf import download_pdf
 from remove_pdf import remove_pdf
 from list_pdf import list_pdf
+from ask_source_function import RAG
 
 load_dotenv()
 
@@ -142,8 +143,8 @@ async def summarize_tazuna(ctx: any, *, user_input: str):
 async def summarize_tazuna(ctx: any):
     async with ctx.typing():
         try:
-            message = f"Here all of the PDFs I have on hand:\n{list_pdf()}"
-            await ctx.reply(message)
+            response = f"Here all of the PDFs I have on hand:\n{list_pdf()}"
+            await ctx.reply(response )
 
             print("Task completed!")
 
@@ -158,6 +159,7 @@ async def summarize_tazuna(ctx: any):
 async def ask_tazuna(ctx: any, *, user_input: str):
     async with ctx.typing():
         try:
+            output_text = RAG(user_input=user_input)
 
             if len(output_text) > 2000:
                 print("chunking...")
