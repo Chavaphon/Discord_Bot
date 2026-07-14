@@ -14,7 +14,7 @@ class help_message:
 ## !remove
 - **Description**: Use when you want Tazuna to **remove** a PDF file from her foler.
 - **Format**: `!remove [filename]` or `!remove all`
-## !add
+## !memory
 - **Description**: Use when you want **view** all the PDF(s) Tazuna have.
 - **Format**: `!memory`
     '''
