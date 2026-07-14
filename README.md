@@ -1,1 +1,1 @@
-# Discord_Bot
+# Tazuna Hayakawa
