@@ -53,7 +53,7 @@ builder.add_edge("chunker", END)
 
 graph = builder.compile()
 
-def helper_chunk(text: str):
+def chunk_output(text: str):
     response = graph.invoke({"text": text})
 
     output_text = response["chunks"]

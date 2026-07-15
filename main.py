@@ -16,7 +16,7 @@ from help_message import help_message
 
 from ask_function import ask
 
-from helper_function import helper_chunk
+from chunk_output import chunk_output
 
 from chat_summarize_function import summarize_messages
 
@@ -65,7 +65,7 @@ async def ask_tazuna(ctx: any, *, user_input: str):
                 print("chunking...")
                 await ctx.reply("Give me one moment, please.")
                 
-                chunked_output = helper_chunk(text=output_text)
+                chunked_output = chunk_output(text=output_text)
                 for ele in chunked_output:
                     await ctx.reply(ele)
             else:
@@ -91,7 +91,7 @@ async def summarize_tazuna(ctx: any, *, user_input: str):
                 print("chunking...")
                 await ctx.reply("Give me one moment, please.")
                 
-                chunked_output = helper_chunk(text=output_text)
+                chunked_output = chunk_output(text=output_text)
                 for ele in chunked_output:
                     await ctx.reply(ele)
             else:
@@ -169,7 +169,7 @@ async def ask_tazuna(ctx: any, *, user_input: str):
                 print("chunking...")
                 await ctx.reply("Give me one moment, please.")
                 
-                chunked_output = helper_chunk(text=output_text)
+                chunked_output = chunk_output(text=output_text)
                 for ele in chunked_output:
                     await ctx.reply(ele)
             else:
