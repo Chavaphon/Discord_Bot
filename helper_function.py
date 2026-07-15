@@ -6,10 +6,9 @@ from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
 from pydantic import BaseModel
 
-from prompt_template import prompt_template
+from prompt_template import PromptTemplate
 
 load_dotenv()
-
 
 class State(TypedDict):
     text: str

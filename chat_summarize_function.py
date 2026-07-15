@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 from datetime import datetime, time
 
-from prompt_template import prompt_template
+from prompt_template import PromptTemplate
 
 load_dotenv()
 
@@ -25,7 +25,7 @@ class State(TypedDict):
 
 llm = ChatOllama(model=os.getenv("MODEL"))
 
-summarization_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
+summarization_prompt = ChatPromptTemplate.from_template(PromptTemplate.prompt + 
     """
         Your job is to summarize the given messages.
         Do no skip on any details.

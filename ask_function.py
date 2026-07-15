@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from search_function import search
 
-from prompt_template import prompt_template
+from prompt_template import PromptTemplate
 
 load_dotenv()
 
@@ -21,7 +21,7 @@ class Reason(BaseModel):
 
 llm = ChatOllama(model=os.getenv("MODEL"))
 
-ask_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
+ask_prompt = ChatPromptTemplate.from_template(PromptTemplate.prompt + 
     """
         You are also a helpful guide who answers every question in a clear and concise way.
 

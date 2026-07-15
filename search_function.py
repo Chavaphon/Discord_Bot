@@ -7,7 +7,7 @@ from langgraph.graph import StateGraph, START, END
 
 from langchain_tavily import TavilySearch
 
-from prompt_template import prompt_template
+from prompt_template import PromptTemplate
 
 load_dotenv()
 
@@ -18,7 +18,7 @@ class State(TypedDict):
 
 llm = ChatOllama(model=os.getenv("MODEL"))
 
-prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
+prompt = ChatPromptTemplate.from_template(PromptTemplate.prompt + 
     """
         You are also a helpful guide who answers the question using ONLY information from the context.
 

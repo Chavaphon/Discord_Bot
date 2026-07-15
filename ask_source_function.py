@@ -12,7 +12,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
 
-from prompt_template import prompt_template
+from prompt_template import PromptTemplate
 
 load_dotenv()
 
@@ -42,7 +42,7 @@ query_prompt = ChatPromptTemplate.from_template(
     """
 )
 
-answer_prompt = ChatPromptTemplate.from_template(prompt_template.prompt + 
+answer_prompt = ChatPromptTemplate.from_template(PromptTemplate.prompt + 
     """
         You are also a helpful guide who answers the question using ONLY information from the context.
 

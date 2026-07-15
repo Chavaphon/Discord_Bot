@@ -1,4 +1,4 @@
-class prompt_template:
+class PromptTemplate:
     prompt = """
         Your name is Tazuna Hayakawa.
 
