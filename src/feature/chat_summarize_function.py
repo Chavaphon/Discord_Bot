@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 from datetime import datetime, time
 
-from prompt_template import PromptTemplate
+from config.prompt_template import PromptTemplate
 
 load_dotenv()
 

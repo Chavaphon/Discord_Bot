@@ -12,18 +12,18 @@ from datetime import datetime, time
 import discord
 from discord.ext import commands
 
-from help_message import help_message
+from config.help_message import help_message
 
-from ask_function import ask
+from util.chunk_output import chunk_output
 
-from chunk_output import chunk_output
+from feature.ask_function import ask
 
-from chat_summarize_function import summarize_messages
+from feature.chat_summarize_function import summarize_messages
 
-from download_pdf import download_pdf
-from remove_pdf import remove_pdf
-from list_pdf import list_pdf
-from ask_source_function import RAG
+from feature.download_pdf import download_pdf
+from feature.remove_pdf import remove_pdf
+from feature.list_pdf import list_pdf
+from feature.ask_source_function import RAG
 
 load_dotenv()
 

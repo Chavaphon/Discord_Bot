@@ -7,7 +7,7 @@ from langgraph.graph import StateGraph, START, END
 
 from langchain_tavily import TavilySearch
 
-from prompt_template import PromptTemplate
+from config.prompt_template import PromptTemplate
 
 load_dotenv()
 
@@ -58,6 +58,3 @@ def search(user_input: str):
     response = graph.invoke({"question": user_input})
 
     return response["answer"]
-
-if __name__ == "__main__":
-    print(search("how many days until Halloween"))

@@ -6,9 +6,9 @@ from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
 from pydantic import BaseModel
 
-from search_function import search
+from util.search_function import search
 
-from prompt_template import PromptTemplate
+from config.prompt_template import PromptTemplate
 
 load_dotenv()
 
