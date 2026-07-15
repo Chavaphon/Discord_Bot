@@ -85,6 +85,3 @@ def ask(user_input: str):
     response = graph.invoke({"question": user_input})
 
     return response["answer"]
-
-if __name__ == "__main__":
-    print(ask("Who are you?"))

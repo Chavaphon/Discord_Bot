@@ -13,7 +13,3 @@ def list_pdf() -> str:
         
         pdfs += f"- {pdf} ({file_size:.1f} KB)\n"
     return pdfs
-
-if __name__ == "__main__":
-    pdf = list_pdf()
-    print(pdf)

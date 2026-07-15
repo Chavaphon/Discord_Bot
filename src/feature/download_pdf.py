@@ -17,6 +17,3 @@ async def download_pdf(attachments: list) -> str:
 
         await pdf.save(file_path)
     return "succesfully downloaded the pdf(s)"
-
-if __name__ == "__main__":
-    print("placeholder")

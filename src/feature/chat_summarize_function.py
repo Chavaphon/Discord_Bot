@@ -82,6 +82,3 @@ async def summarize_messages(ctx: any, start_date: str, end_date: str):
     response = await graph.ainvoke({"ctx": ctx, "start_date": start_date, "end_date": end_date})
 
     return response["summarized_message"]
-
-if __name__ == "__main__":
-    print("placeholder")

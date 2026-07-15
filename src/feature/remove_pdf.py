@@ -19,6 +19,3 @@ def remove_pdf(pdf: str) -> str:
         if os.path.exists(file_path):
             os.remove(file_path)
     return "succesfully removed the pdf(s)"
-
-if __name__ == "__main__":
-    print("placeholder")

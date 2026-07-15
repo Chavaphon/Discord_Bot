@@ -135,6 +135,3 @@ def RAG(user_input: str) -> str:
     response = graph.invoke({"question": user_input, "folder": folder})
 
     return response["answer"]
-
-if __name__ == "__main__":
-    print(RAG("what do we learn in AI Automation?"))

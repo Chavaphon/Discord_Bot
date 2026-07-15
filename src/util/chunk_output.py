@@ -59,6 +59,3 @@ def chunk_output(text: str):
     output_text = response["chunks"]
 
     return output_text
-
-if __name__ == "__main__":
-    print(helper_chunk(""))
