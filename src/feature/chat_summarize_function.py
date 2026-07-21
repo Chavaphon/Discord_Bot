@@ -4,7 +4,6 @@ from typing import Annotated, TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, START, END
-from pydantic import BaseModel, Field
 
 from datetime import datetime, time
 

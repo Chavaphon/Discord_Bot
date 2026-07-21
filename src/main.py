@@ -25,6 +25,8 @@ from feature.remove_pdf import remove_pdf
 from feature.list_pdf import list_pdf
 from feature.ask_source_function import RAG
 
+from feature.translate_function import translate
+
 load_dotenv()
 
 intents = discord.Intents.default()
@@ -164,6 +166,35 @@ async def ask_tazuna(ctx: any, *, user_input: str):
     async with ctx.typing():
         try:
             output_text = RAG(user_input=user_input)
+
+            if len(output_text) > 2000:
+                print("chunking...")
+                await ctx.reply("Give me one moment, please.")
+                
+                chunked_output = chunk_output(text=output_text)
+                for ele in chunked_output:
+                    await ctx.reply(ele)
+            else:
+                await ctx.reply(output_text)
+            
+            print("Task completed!")
+
+        except Exception as e:
+            print(f"Error invoking Tazuna: {e}")
+            await ctx.reply("Sorry, I ran into an error processing that request.")
+
+# ==========================================
+# !translate
+# ==========================================
+@bot.command(name="translate")
+async def ask_tazuna(ctx: any, *, user_input: str):
+    async with ctx.typing():
+        try:
+            text, language = user_input.split(" ")
+
+            source_language, translation = translate(text, language)
+
+            output_text = f"Text language: {source_language}\nTranslation: {translation}"
 
             if len(output_text) > 2000:
                 print("chunking...")
