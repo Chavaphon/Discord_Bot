@@ -54,7 +54,7 @@ builder.add_edge("answer", END)
 
 graph = builder.compile()
 
-def search(user_input: str):
+def search(user_input: str) -> str:
     response = graph.invoke({"question": user_input})
 
     return response["answer"]

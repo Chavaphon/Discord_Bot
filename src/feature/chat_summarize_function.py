@@ -77,7 +77,7 @@ builder.add_edge("summarize_messages", END)
 
 graph = builder.compile()
 
-async def summarize_messages(ctx: any, start_date: str, end_date: str):
+async def summarize_messages(ctx: any, start_date: str, end_date: str) -> str:
     response = await graph.ainvoke({"ctx": ctx, "start_date": start_date, "end_date": end_date})
 
     return response["summarized_message"]
