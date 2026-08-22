@@ -17,6 +17,9 @@ class help_message:
 ## !memory
 - **Description**: Use when you want **view** all the PDF(s) Tazuna have.
 - **Format**: `!memory`
+## !source
+- **Description**: Use when you want to ask questions based on **sources** you have given.
+- **Format**: `!source [Your question]`
 ## !translate
 - **Description**: Use when you want to **translate** a piece of text into a designated language.
 - **Format**: `!translate [text] [designated language]`
