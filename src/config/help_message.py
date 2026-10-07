@@ -22,5 +22,5 @@ class help_message:
 - **Format**: `!source [Your question]`
 ## !translate
 - **Description**: Use when you want to **translate** a piece of text into a designated language.
-- **Format**: `!translate [text] [designated language]`
+- **Format**: `!translate [text] | [designated language]`
     """

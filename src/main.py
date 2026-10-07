@@ -190,9 +190,13 @@ async def ask_tazuna(ctx: any, *, user_input: str):
 async def ask_tazuna(ctx: any, *, user_input: str):
     async with ctx.typing():
         try:
-            text, language = user_input.split(" ")
+            if "|" not in user_input:
+                await ctx.send("Please use the format: `!translate [text] | [language]`")
+                return
 
-            source_language, translation = translate(text, language)
+            text, language = user_input.split("|", 1)
+
+            source_language, translation = translate(text.strip(), language.strip())
 
             output_text = f"Text language: {source_language}\nTranslation: {translation}"
 
